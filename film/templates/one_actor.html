@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+{% block content %}
+   <h1>{{actor.first_name}} {{actor.last_name}}</h1>
+    <p>description {{actor.description}}</p>
+    <p>birth_date {{actor.birth_date}}</p>
+    <p>photo {{actor.photo}}</p>
+
+
+    {% if actor.photo %}
+    <div class="p-photo">
+        <img class="img-product-left" src="{{actor.photo.url}}">
+    </div>
+    {% endif %}
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>  <a href="{% url 'actor_edit' actor.pk %}">
+             Edit actor </a>  </button>
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'> <a href="{% url 'actor_delete' actor.pk %}">
+             Delete actor </a> </button>
+
+{% endblock %}

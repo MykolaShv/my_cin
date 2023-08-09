@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all films</h1>
+    {% for film in films %}
+        <p>
+            <b>{{ film.title }}  </b>
+
+            <a href="{% url 'film_detail' film.pk %}"> Detail </a>
+        </p>
+        <p> <i> {{ film.description|truncatechars:100}} </i> </p>
+    {% endfor %}
+{% endblock content %}

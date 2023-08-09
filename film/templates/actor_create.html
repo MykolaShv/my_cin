@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content%}
+    <h1>actor_create</h1>
+    <div>
+      <form action="{% url 'actor_create' %}" method="post" enctype="multipart/form-data">
+
+          {{form.as_p}}
+            {% csrf_token %}
+        <button type="submit" style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;">Create! </button>
+      </form>
+    </div>
+{% endblock %}

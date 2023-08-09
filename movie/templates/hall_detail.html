@@ -1,0 +1,69 @@
+﻿
+
+{% extends 'base.html' %}
+{% block content %}
+
+     <div>
+         Hall name:<span style="color: blue"> {{ name }} </span>
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <div class='result'>
+  </div>
+  <div class='cinemaHall zal1'></div>
+
+        {% if photo %}
+       <center>  <div class="p-photo_hall">
+            <img class="img-hall" src="{{photo.url}}">
+        </div> </center>
+        {% endif %}
+    {% for i in rows %}
+        <center>
+            {% if i < 10 %}
+            row 0{{i}}
+            {% else %}
+            row {{i}}
+            {% endif %}
+        {% for j in seats %}
+            <div class="seat"  data-seat = {{j}} data-row = {{i}}></div>
+        {% endfor %}
+        </center>
+    {% endfor %}
+    <center> <p>
+        <div class="seat_number" > seats </div>
+        <div class="seat_number" >  </div>
+        {% for j in seats %}
+        {% if j < 10 %}
+             <div class="seat_number" > 0{{j}} </div>
+            {% else %}
+           <div class="seat_number" >   {{j}} </div>
+            {% endif %}
+        {% endfor %}  </p>
+         </center>
+<script>
+
+// тут по клику определяем что место выкуплено
+$('.seat').on('click', function(e) {
+  // если первый раз кликнули билет выкупили,
+  // если повторно значит вернули билет
+  $(e.currentTarget).toggleClass('bay');
+  //показываем сколько билетов выкуплено
+  showBaySeat();
+});
+
+function showBaySeat() {
+  result = '';
+  //ищем все места купленные и показываем список выкупленных мест
+  $.each($('.seat.bay'), function(key, item) {
+    result += '<div class="ticket">Row: ' +
+      $(item).data().row + ' Seat: ' +
+      $(item).data().seat + '</div>';
+  });
+
+  $('.result').html(result);
+}
+  </script>
+{% endblock %}
+

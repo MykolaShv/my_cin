@@ -1,0 +1,73 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+  <h1>{{film.title}}</h1>
+    <p>description  <span style="color: blue"> {{film.description}}  </span> </p>
+    <p>country
+        {% for el in film.country.all %}
+            <span style="color: blue"> {{ el }} </span>
+            {% endfor %}
+    </p>
+    <p>directors
+      {% for el in film.directors.all %}
+            <span style="color: blue"> {{ el }} </span>
+      {% endfor %}
+    </p>
+    <p>actors
+      {% for el in film.actors.all %}
+            <span style="color: blue"> {{ el }} </span>
+      {% endfor %}
+    </p>
+    <p>genres
+      {% for el in film.genres.all %}
+             <span style="color: blue"> {{ el }} </span>
+      {% endfor %}
+    </p>
+    <p>running_time <span style="color: blue">  {{film.running_time}}  </span> </p>
+    <p>rating <span style="color: blue"> {{film.rating}}</span> </p>
+    <p>age_rating <span style="color: blue"> {{film.get_age_rating_display}} </span> </p>
+    {% if film.poster %}
+    <div class="p-photo">
+        <img class="img-product-left" src="{{film.poster.url}}">
+    </div>
+    {% endif %}
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>  <a href="{% url 'film_edit' film.pk %}">
+             Edit film </a>  </button>
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'> <a href="{% url 'film_delete' film.pk %}">
+             Delete film </a> </button>
+<!--   <iframe  src="{{ film.trailer }}"  >-->
+
+
+<div style="background-color: #ffff99;">
+    {% if new_comment %}
+        <h2>Your comment has been added.</h2>
+    {% else %}
+        <h2>Add a new comment</h2>
+  <form action="{% url 'create_comment' film.pk  %}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="Add comment"></p>
+  </form>
+{% endif %}
+</div >
+
+    {% with comments.count as total_comments %}
+      <h2>
+        {{ total_comments }} comment{{ total_comments|pluralize }}
+      </h2>
+    {% endwith %}
+
+    {% for comment in comments %}
+        <div style="background-color: #b3c6ff; border: 1px #0040ff solid; border-radius: 20px 5px">
+            <p><b>Comment # {{ forloop.counter }}</b></p>
+            <p style="text-align:right;" ><i><small> created: {{comment.created_at}}  </small></i></p>
+            <p>{{comment.text }}</p>
+            <p style="text-align:center;" ><b>Автор: {{comment.author}}</b></p>
+        </div>
+    {% endfor %}
+
+
+{% endblock %}

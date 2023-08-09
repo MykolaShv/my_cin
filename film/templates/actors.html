@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all actors</h1>
+    {% for actor in actors %}
+        <p>
+            <b>{{ actor.first_name }} {{ actor.last_name }} </b>
+
+            <a href="{% url 'actor_detail' actor.pk %}"> Detail </a>
+        </p>
+        {% if actor.photo %}
+        <div class="p-photo">
+            <img class="img-product-left" src="{{actor.photo.url}}">
+        </div>
+        {% endif %}
+        {% endfor %}
+{% endblock content %}

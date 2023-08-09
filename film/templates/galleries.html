@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all galleries</h1>
+    {% for gallery in galleries %}
+        <p>
+            <b>{{ gallery.title }} {{ gallery.film}} </b>
+
+            <a href="{% url 'gallery_detail' actor.pk %}"> Detail </a>
+        </p>
+        {% if actor.photo %}
+        <div class="p-photo">
+            <img class="img-product-left" src="{{gallery.photo.url}}">
+        </div>
+        {% endif %}
+        {% endfor %}
+{% endblock content %}

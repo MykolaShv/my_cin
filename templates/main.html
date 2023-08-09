@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content%}
+    <h1>MAIN</h1>
+ {% for sss in sssss %}
+        <p>
+            <b>{{ sss.hall }} </b>
+            <b>{{ sss.movie }} </b>
+            <b>{{ sss.release }} </b>
+            <b>{{ sss.start_time }} </b>
+            <b>{{ sss.end_time }} </b>
+
+    <p> <i> {{ sss.date}}  </i> </p>
+
+        {% endfor %}
+{% endblock %}

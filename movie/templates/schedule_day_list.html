@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all schedule_day</h1>
+    {% for name in schedule_days %}
+        <p>
+            <b>name {{ name }}  </b>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>
+                <a href="{% url 'schedule_day_detail' name.pk %}"> Detail </a> </button>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>
+            <a href="{% url 'schedule_day_edit' name.pk %}" class="btn">day update</a>
+                </button>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                        border-radius: 20px 5px;" type='submit'>
+                <a href="{% url 'schedule_day_delete' name.pk %}">  Delete day
+                </a> </button>
+           </p>
+
+        {% endfor %}
+{% endblock %}

@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+
+  <h1>gallery.title {{gallery.title}} </h1>
+    <p>description {{gallery.photo}}</p>
+    <p>birth_date {{gallery.film}}</p>
+
+
+
+    {% if director.photo %}
+    <div class="p-photo">
+        <img class="img-product-left" src="{{director.photo.url}}">
+    </div>
+    {% endif %}
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>  <a href="{% url 'gallery_edit' gallery.pk %}">
+             Edit gallery </a>  </button>
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'> <a href="{% url 'gallery_delete' gallery.pk %}">
+             Delete gallery </a> </button>
+
+{% endblock %}

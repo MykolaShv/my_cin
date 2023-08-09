@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all directors</h1>
+    {% for director in directors %}
+        <p>
+            <b>{{ director.first_name }} {{ director.last_name }} </b>
+
+            <a href="{% url 'director_detail' director.pk %}"> Detail </a>
+        </p>
+        {% if director.photo %}
+        <div class="p-photo">
+            <img class="img-product-left" src="{{director.photo.url}}">
+        </div>
+        {% endif %}
+        {% endfor %}
+{% endblock content %}

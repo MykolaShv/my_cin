@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all genres</h1>
+    {% for genre in genres %}
+        <p>
+            <b>{{ genre.name }} </b>
+
+            <a href="{% url 'genre_detail' genre.pk %}"> Detail </a>
+        </p>    
+        {% endfor %}
+{% endblock content %}
