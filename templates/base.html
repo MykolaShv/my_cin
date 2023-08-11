@@ -213,7 +213,6 @@
 
             <ul id="navbar">
                 <li><a href="{% url 'main' %}"  >Main page</a></li>
-                <li><a href="{% url 'schedule_day_list' %}" >Time_table</a></li>
                 <li><a href="{% url 'soon' %}" >Soon</a></li>
                 <div class="dropdown">
                       <button class="dropbtn">About films</button>
@@ -234,7 +233,6 @@
                       <button class="dropbtn">For staff Add</button>
                       <div class="dropdown-content">
                             <a href="{% url 'hall_create' %}  "> create hall </a>
-                            <a href="{% url 'schedule_day_create' %}  "> schedule_create</a>
                             <a href="{% url 'session_create' %}  "> create session</a>
                             <a href="{% url 'release_create' %}  "> create release</a>
                             <a href="{% url 'film_create' %}  "> Add film</a>
@@ -249,7 +247,6 @@
                       <button class="dropbtn">For staff Lists</button>
                       <div class="dropdown-content">
                           <a href="{% url 'hall_list'  %}  "> halls </a>
-                          <a href="{% url 'schedule_day_list'  %}  "> scheduls</a>
                           <a href="{% url 'session_list'  %}  "> sessions</a>
                           <a href="{% url 'release_list'  %}  "> releases</a>
                           <a href="{% url 'all_films' %}  "> Films </a>

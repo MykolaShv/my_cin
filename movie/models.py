@@ -1,4 +1,5 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+import datetime
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext as _
 from film.models import Film
@@ -6,84 +7,94 @@ from django.conf import settings
 
 User = settings.AUTH_USER_MODEL
 
-months = [_('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'),
-          _('August'), _('September'), _('October'), _('November'), _('December')]
+
+class BaseModel(models.Model):
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
 
 
-class Hall(models.Model):
-    name = models.CharField(max_length=100, verbose_name=_('Hall name'))
-    rows = models.IntegerField()
-    seats = models.IntegerField()
+class Seat(models.Model):
+    id = models.AutoField(primary_key=True)
+    row = models.PositiveSmallIntegerField(blank=True, null=True)
+    col = models.PositiveSmallIntegerField(blank=True, null=True)
+    hall = models.ForeignKey('movie.Hall', on_delete=models.CASCADE, related_name='seats')
+
+    class Meta:
+        unique_together = ('row', 'col', 'hall')
+
+
+class Hall(BaseModel):
+    id = models.AutoField(primary_key=True)
+    rows = models.PositiveSmallIntegerField(blank=True, null=True)
+    cols = models.PositiveSmallIntegerField(blank=True, null=True)
     photo = models.ImageField(upload_to='img/others/', blank=True, null=True)
-
-    def capacity(self):
-        return self.rows * self.seats
 
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name = _('Hall')
-        verbose_name_plural = _('Halls')
+    def save(self, *args, **kwargs):
+        if Hall.objects.filter(name=self.name).first():
+            raise ValidationError("This name is already in use!")
+        new_hall = self.id is None
+        res = super().save(*args, **kwargs)
+        if new_hall:
+            seats = []
+            for row in range(self.rows):
+                for col in range(self.cols):
+                    seats.append(Seat(row=row + 1, col=col + 1, hall=self))
+            Seat.objects.bulk_create(seats)
+        return res
 
 
 class Release(models.Model):
-    class Meta:
-        verbose_name = _('Release')
-        verbose_name_plural = _('Releases')
-        ordering = ["start_date"]
-
     movie = models.ForeignKey(Film, on_delete=models.CASCADE)
+    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
     start_date = models.DateField(verbose_name=_('Start date'))
     end_date = models.DateField(verbose_name=_('End date'))
 
     def __str__(self):
         return self.movie.title + " " + str(self.start_date)
 
-class ScheduleDay(models.Model):
-    hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
-    day = models.IntegerField(blank=False, null=False)  # день тижня, пн - 1, вівт - 2 тощо
-    start_at = models.TimeField(blank=True, null=True)  # не знаю як прописати декілька стартів, НЕВЖЕ створювати
-    #                                                    новий клас і через ForeignKey обирати?
-    release = models.ForeignKey(Release, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_("Release"))
-
-    def __str__(self):
-        return str(self.release.movie) + " " + str(self.hall) + " " + str(self.day) + " " + str(self.start_at)
-
-    class Meta:
-        verbose_name = _('ScheduleDay')
+    def save(self, *args, **kwargs):
+        if self.end_date < self.start_date:
+            raise ValidationError("End date must be after start date.")
+        res = super().save(*args, **kwargs)
+        return res
 
 
 class Session(models.Model):
-    class Meta:
-        verbose_name = _('Session')
+    time_start = models.TimeField()
+    time_end = models.TimeField()
+    session = models.ForeignKey(Release, on_delete=models.CASCADE)
+    end_next_day = models.BooleanField(default=False)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
-    one_session = models.ForeignKey(ScheduleDay, on_delete=models.CASCADE, verbose_name=_('One session'))
-    price = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_('Ticket price'))
+    def __str__(self):
+        return self.session.movie.title + " " + str(self.time_start)
 
-
-class Seat(models.Model):
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    row = models.IntegerField()
-    seat = models.IntegerField()
-
-    class Meta:
-        unique_together = ('row', 'seat')
+    def save(self, *args, **kwargs):
+        if self.time_end < self.time_start:
+            raise ValidationError("End date must be after start date.")
+        if Session.objects.filter(time_start=self.time_start).first():
+            raise ValidationError("for this time the session exists")
+        res = super().save(*args, **kwargs)
+        return res
 
 
 class Ticket(models.Model):
-    spectator = models.ForeignKey(User, on_delete=models.DO_NOTHING, verbose_name=_("Spectator"),
-                                  related_name="movie_spectator_ticket")
-    amount = models.PositiveSmallIntegerField(verbose_name=_("Session"), validators=[MinValueValidator(1),
-                                                                                     MaxValueValidator(1000)])
-    time_purchase = models.DateTimeField(auto_now=True)
-    session = models.ForeignKey(Session, on_delete=models.DO_NOTHING, verbose_name=_("Session"),
-                                related_name="session")
+    spectator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='spectator')
+    session_timeframe = models.ForeignKey(Session, on_delete=models.CASCADE)
     seat = models.ForeignKey(Seat, on_delete=models.DO_NOTHING)
 
-    class Meta:
-        verbose_name = _("Ticket")
-        verbose_name_plural = _("Tickets")
-        ordering = ["time_purchase"]
+    def validate_seats(self):
+        if Ticket.objects.filter(seat=self.seat).first():
+            raise ValidationError("This seat is already taken!")
+
+    def clean(self):
+        if not self.session_timeframe.session.hall.seats.filter(id=self.seat.id).exists():
+            raise ValidationError({"seat": "Seat does not exist in this session"})
 
 # Create your models here.

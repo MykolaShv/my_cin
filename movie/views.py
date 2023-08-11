@@ -5,8 +5,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
-from .forms import CreateHallForm, ScheduleDayForm, ReleaseForm, SessionForm
-from .models import Session, Hall, ScheduleDay, Release
+from .forms import CreateHallForm, ReleaseForm, SessionForm
+from .models import Session, Hall, Release
 import os, sys
 from django.conf import settings
 
@@ -47,12 +47,12 @@ class HallDetailView(PermissionRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         hall = Hall.objects.get(id=self.object.id)
         rows = hall.rows
-        seats = hall.seats
+        cols = hall.cols
 
         context = {
             'name': hall.name,
             'rows': [number for number in range(1, rows + 1)],
-            'seats': [number for number in range(1, seats + 1)],
+            'cols': [number for number in range(1, cols + 1)],
             'photo': hall.photo
         }
         return context
@@ -107,48 +107,6 @@ class SessionDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     success_url = reverse_lazy('main')
     login_url = settings.LOGIN_URL
     success_message = "session is deleted"
-
-
-# робота із графіками показу фільму
-class CreateScheduleDayView(PermissionRequiredMixin, CreateView):
-    permission_required = 'is_staff'
-    model = ScheduleDay
-    form_class = ScheduleDayForm
-    success_url = reverse_lazy('main')
-    template_name = 'create_schedule_day.html'
-    login_url = settings.LOGIN_URL
-
-
-class ScheduleDayEditView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-    model = ScheduleDay
-    template_name = 'edit_schedule_day.html'
-    fields = '__all__'
-    success_url = reverse_lazy('main')
-    login_url = settings.LOGIN_URL
-    success_message = "schedule_day %(day)s is updated"
-
-
-class ScheduleDayListView(ListView):
-    model = ScheduleDay
-    template_name = 'schedule_day_list.html'
-    context_object_name = 'schedule_days'
-
-
-class ScheduleDayDetailView(PermissionRequiredMixin, DetailView):
-    login_url = settings.LOGIN_URL
-    permission_required = 'is_staff'
-    model = ScheduleDay
-    template_name = 'schedule_day_detail.html'
-    context_object_name = "schedule_day"
-
-
-class ScheduleDayDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
-    model = ScheduleDay
-    context_object_name = 'schedule_day'
-    template_name = 'schedule_day_delete.html'
-    success_url = reverse_lazy('main')
-    login_url = settings.LOGIN_URL
-    success_message = "schedule_day is deleted"
 
 
 # робота фільму в прокаті

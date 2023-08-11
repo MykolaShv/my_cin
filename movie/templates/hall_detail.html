@@ -26,15 +26,15 @@
             {% else %}
             row {{i}}
             {% endif %}
-        {% for j in seats %}
-            <div class="seat"  data-seat = {{j}} data-row = {{i}}></div>
+        {% for j in cols %}
+            <div class="seat"  data-col = {{j}} data-row = {{i}}></div>
         {% endfor %}
         </center>
     {% endfor %}
     <center> <p>
         <div class="seat_number" > seats </div>
         <div class="seat_number" >  </div>
-        {% for j in seats %}
+        {% for j in cols %}
         {% if j < 10 %}
              <div class="seat_number" > 0{{j}} </div>
             {% else %}
@@ -59,7 +59,7 @@ function showBaySeat() {
   $.each($('.seat.bay'), function(key, item) {
     result += '<div class="ticket">Row: ' +
       $(item).data().row + ' Seat: ' +
-      $(item).data().seat + '</div>';
+      $(item).data().col + '</div>';
   });
 
   $('.result').html(result);

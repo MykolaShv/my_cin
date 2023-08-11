@@ -1,9 +1,8 @@
 from django.urls import path
 
 from .views import about, session_search, soon_list, buy_ticket, ticket_detail, ticket_list, ticket_create, \
-    print_ticket, CreateHallView, HallDetailView, HallListView, HallEditView, ScheduleDayEditView, ScheduleDayListView, \
-    CreateScheduleDayView, ScheduleDayDetailView, HallDeleteView, \
-    ScheduleDayDeleteView, ReleaseDeleteView, ReleaseEditView, ReleaseDetailView, ReleaseListView, \
+    print_ticket, CreateHallView, HallDetailView, HallListView, HallEditView, HallDeleteView, \
+    ReleaseDeleteView, ReleaseEditView, ReleaseDetailView, ReleaseListView, \
     CreateReleaseView, CreateSessionView, SessionListView, SessionDetailView, SessionEditView, SessionDeleteView
 
 urlpatterns = [
@@ -19,11 +18,6 @@ urlpatterns = [
     path('session/update/<int:pk>/', SessionEditView.as_view(), name='session_update'),
     path('session/delete/<int:pk>/', SessionDeleteView.as_view(), name='session_delete'),
     path('session/search/', session_search, name='session_search'),
-    path('schedule_day/create/', CreateScheduleDayView.as_view(), name='schedule_day_create'),
-    path('schedule_day/list/', ScheduleDayListView.as_view(), name='schedule_day_list'),
-    path('schedule_day/detail/<int:pk>/', ScheduleDayDetailView.as_view(), name='schedule_day_detail'),
-    path('schedule_day/edit/<int:pk>/', ScheduleDayEditView.as_view(), name='schedule_day_edit'),
-    path('schedule_day/delete/<int:pk>/', ScheduleDayDeleteView.as_view(), name='schedule_day_delete'),
     path('release/create/', CreateReleaseView.as_view(), name='release_create'),
     path('release/list/', ReleaseListView.as_view(), name='release_list'),
     path('release/edit/<int:pk>/', ReleaseEditView.as_view(), name='release_edit'),
