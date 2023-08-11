@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all halls</h1>
+    {% for hall in halls %}
+        <p>
+            <b>name {{ hall.name }}  </b>
+
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>
+                <a href="{% url 'hall_detail' hall.pk %}"> Detail </a> </button>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>
+            <a href="{% url 'hall_update' hall.pk %}" class="btn">Hall update</a>
+                </button>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                        border-radius: 20px 5px;" type='submit'>
+                <a href="{% url 'hall_delete' hall.pk %}">  Delete hall
+                </a> </button>
+        </p>
+
+        {% endfor %}
+{% endblock %}

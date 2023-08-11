@@ -1,0 +1,14 @@
+﻿
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Detail session</h1>
+    <p>hall  {{session.one_session.hall}}</p>
+    <p>movie  {{session.one_session.release.movie}}</p>
+    <p>release  {{session.one_session.release}}</p>
+    <p>start_time  {{session.one_session.start_at}}</p>
+    <p>date  {{session.one_session.day}}</p>
+    <p>price  {{session.price}}</p>
+
+
+{% endblock content %}
+

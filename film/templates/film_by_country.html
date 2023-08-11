@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all films_by country</h1>
+    {% for film in films %}
+        <p>
+            <b>{{ film.title }}  </b>
+
+            <a href="{% url 'film_detail' film.pk %}"> Detail </a>
+        </p>
+         <p>country
+        {% for el in film.country.all %}
+            <span style="color: blue"> {{ el }} </span>
+            {% endfor %}
+        </p>
+        {% if film.poster %}
+        <div class="p-photo">
+            <img class="img-product-left" src="{{film.poster.url}}">
+        </div>
+        {% endif %}
+
+        <p> <i> {{ film.release}} </i> </p>
+        <p> <i> {{ film.description|truncatechars:100}} </i> </p>
+        {% endfor %}
+{% endblock content %}

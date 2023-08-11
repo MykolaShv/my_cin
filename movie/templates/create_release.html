@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content%}
+   {% block title %}Create release{% endblock %}
+
+
+    <form method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Создать">
+    </form>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all release</h1>
+    {% for release in releases %}
+        <p>
+            <b>movie {{ release }}  </b>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>
+                <a href="{% url 'release_detail' release.pk %}"> Detail </a> </button>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>
+            <a href="{% url 'release_edit' release.pk %}" class="btn">release update</a>
+                </button>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                        border-radius: 20px 5px;" type='submit'>
+                <a href="{% url 'release_delete' release.pk %}">  Delete release
+                </a> </button>
+           </p>
+
+        {% endfor %}
+{% endblock %}

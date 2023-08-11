@@ -1,0 +1,13 @@
+
+{% extends 'base.html' %}
+{% block content %}
+  <h1>{{genre.name}}</h1>
+
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>  <a href="{% url 'genre_edit' genre.pk %}">
+             Edit genre </a>  </button>
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'> <a href="{% url 'genre_delete' genre.pk %}">
+             Delete genre </a> </button>
+
+{% endblock %}

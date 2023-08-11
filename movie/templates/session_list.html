@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>List of all sessions</h1>
+    {% for session in sessions %}
+        <p>
+            <b>movie {{ session}}  </b>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>
+                <a href="{% url 'session_detail' session.pk %}"> Detail </a> </button>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>
+            <a href="{% url 'session_update' session.pk %}" class="btn">session update</a>
+                </button>
+            <button style="width: 250px; background-color: #99ccff; color: brown;
+                        border-radius: 20px 5px;" type='submit'>
+                <a href="{% url 'session_delete' session.pk %}">  Delete session
+                </a> </button>
+           </p>
+
+        {% endfor %}
+{% endblock %}

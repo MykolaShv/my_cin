@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+{% block content %}
+  <h1>{{director.first_name}} {{director.last_name}}</h1>
+    <p>description {{director.description}}</p>
+    <p>birth_date {{director.birth_date}}</p>
+    <p>photo {{director.photo}}</p>
+
+
+    {% if director.photo %}
+    <div class="p-photo">
+        <img class="img-product-left" src="{{director.photo.url}}">
+    </div>
+    {% endif %}
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>  <a href="{% url 'director_edit' director.pk %}">
+             Edit director </a>  </button>
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'> <a href="{% url 'director_delete' director.pk %}">
+             Delete director </a> </button>
+
+{% endblock %}

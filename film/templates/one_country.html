@@ -1,0 +1,13 @@
+
+{% extends 'base.html' %}
+{% block content %}
+   <h1>{{country.name}}</h1>
+
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'>  <a href="{% url 'country_edit' country.pk %}">
+             Edit country </a>  </button>
+    <button style="width: 250px; background-color: #99ccff; color: brown;
+                border-radius: 20px 5px;" type='submit'> <a href="{% url 'country_delete' country.pk %}">
+             Delete country </a> </button>
+
+{% endblock %}

@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+
+    {% block template %}{% endblock %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+<style>
+        #navbar {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            }
+        #navbar li { display: inline; }
+        #navbar {
+              margin: 0;
+              padding: 0;
+              list-style-type: none;
+              border: 2px solid #0066FF;
+              border-radius: 20px 5px;
+              width: 1150px;
+              text-align: center;
+              background-color: #33ADFF;
+        }
+        #navbar a {
+              color: #fff;
+              padding: 5px 10px;
+              text-decoration: none;
+              font-weight: bold;
+              display: inline-block;
+              width: 100px;
+        }
+
+         #navbar form {
+              color: #fff;
+              padding: 5px 10px;
+              text-decoration: none;
+              font-weight: bold;
+              display: inline-block;
+              width: 160px;
+        }
+        #navbar a:hover {
+              border-radius: 20px 5px;
+              background-color: #0066FF;
+        }
+
+        .dropbtn {
+            background-color: #33ADFF;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 120px;
+            border: none;
+            }
+        .dropbtn:hover {
+              border-radius: 20px 5px;
+              background-color: #fff;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #33ADFF;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #33ADFF;}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {display: block;}
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {background-color: #0066FF;}
+
+
+        .p-photo {
+          width: 30%;
+          float: left;
+
+        }
+        img {max-width: 600px; height: auto;}
+
+        img.img-product-left {
+            max-width: 300px;
+            height: auto;
+            float: left;
+            padding: 0 10px 10px 0;
+        }
+
+        img.img-product-left.thumb {
+            max-width: 150px;
+            height: auto;
+        }
+.cinemaHall {
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+
+}
+.seat {
+  height: 20px;
+  width: 20px;
+  margin-right: 2px;
+  background-color: #999999;
+  display: inline-block;
+  cursor: pointer;
+}
+.seat_number {
+  height: 20px;
+  width: 20px;
+  margin-right: 2px;
+  display: inline-block;
+}
+
+.passageBetween {
+  height: 1px;
+  width: 100%;
+  display: block;
+}
+.passageBetween_number {
+  height: 1px;
+  width: 100%;
+  display: block;
+}
+
+.bay {
+  background-color: red;
+}
+.result {
+  font-size: 10px;
+  display: inline-block;
+ font-weight: bold;
+  width: 90px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-right: 5px;
+}
+
+.p-photo_hall {
+          width: auto;
+          height: auto;
+          overflow: hidden;
+
+
+        }
+        img {width: auto; height: auto;}
+
+        img.img-hall {
+            width: 300px;
+            height: 90px;
+            overflow: hidden;
+            padding: 0 10px 10px 0;
+              margin-left: auto;
+          margin-right: auto
+        }
+
+
+    </style>
+
+</head>
+<body>
+<div class="back">
+</div>
+
+<div class="container cont_one">
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li
+            {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+    <div class="top">
+	<p class="h1">
+		<a href="/">CINEMA! current user: {{request.user}}</a>
+	</p>
+
+	<p class="h2">
+		CINEMA
+	</p>
+         <div style="background-color: #0080ff">
+
+            <ul id="navbar">
+                <li><a href="{% url 'main' %}"  >Main page</a></li>
+                <li><a href="{% url 'soon' %}" >Soon</a></li>
+                <div class="dropdown">
+                      <button class="dropbtn">About films</button>
+                      <div class="dropdown-content">
+                            <a href="{% url 'film_by_title' %}  "> By name</a>
+                            <a href="{% url 'film_rating' %}  "> By rating</a>
+                            <a href="{% url 'film_release' %}  "> By release</a>
+                            <a href="{% url 'by_country' %}  "> By country</a>
+                            <a href="{% url 'by_actor' %}  "> Actors</a>
+                            <a href="{% url 'by_director' %}  "> Directors</a>
+                            <a href="{% url 'by_genre' %}  "> Genres </a>
+                      </div>
+                </div>
+                <li><a href = "{% url 'login' %}" >Login/out</a></li>
+                <li><a href = "{% url 'profile' request.user%}" >Profile </a></li>
+                <li><a href = "{% url 'about' %}" >About </a></li>
+                <div class="dropdown">
+                      <button class="dropbtn">For staff Add</button>
+                      <div class="dropdown-content">
+                            <a href="{% url 'hall_create' %}  "> create hall </a>
+                            <a href="{% url 'session_create' %}  "> create session</a>
+                            <a href="{% url 'release_create' %}  "> create release</a>
+                            <a href="{% url 'film_create' %}  "> Add film</a>
+                            <a href="{% url 'country_create' %}  "> Add country</a>
+                            <a href="{% url 'actor_create' %}  "> Add actor</a>
+                            <a href="{% url 'director_create' %}  ">Add director</a>
+                            <a href="{% url 'genre_create' %}  ">Add genre </a>
+                            <a href="{% url 'create_gallery' %}  ">Add gallery</a>
+                      </div>
+                </div>
+                <div class="dropdown">
+                      <button class="dropbtn">For staff Lists</button>
+                      <div class="dropdown-content">
+                          <a href="{% url 'hall_list'  %}  "> halls </a>
+                          <a href="{% url 'session_list'  %}  "> sessions</a>
+                          <a href="{% url 'release_list'  %}  "> releases</a>
+                          <a href="{% url 'all_films' %}  "> Films </a>
+                          <a href="{% url 'all_actors' %}  "> Actors </a>
+                          <a href="{% url 'all_countries' %}  ">Countries </a>
+                          <a href="{% url 'all_directors' %}  ">Directors </a>
+                          <a href="{% url 'all_genres' %}  ">Genres </a>
+                          <a href="{% url 'all_galleries' %}  ">Galleries </a>
+                      </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+	<div class="header">
+		<div id="myCarousel" class="carousel slide">
+			<div class="carousel-inner"> </div>
+			<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+		</div>
+	</div>
+    {% block navbar %}{% endblock %}
+    <div class="body">
+		<p class="body_p">
+		</p>
+    {% block content %}{% endblock %}
+        <div class="footer">
+            <p class="foot">
+
+            <br>
+            ____ <a href="#" class="foot_a"></a>_____
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/2.2.0/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>
